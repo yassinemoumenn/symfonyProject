@@ -1,0 +1,233 @@
+<?php
+
+namespace App\Controller;
+
+use App\Repository\UserRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use JeroenDesloovere\VCard\VCard;
+use League\Csv\Reader;
+use Symfony\Component\HttpFoundation\Request;
+
+use Symfony\Component\HttpFoundation\File\File;
+
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+//use Symfony\Component\HttpFoundation\File\MimeType\FileinfoMimeTypeGuesser;
+//use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
+class SendfilController extends AbstractController
+{
+    /**
+     * @Route("/api/send", name="send",methods={"GET"})
+     */
+    public function index(UserRepository $repository,Request $req): Response
+    {
+ /** @var UploadedFile $uploadedFile */
+    //$uploadedFile = $req->request->get("path");
+	//echo'hii';
+	$response = new StreamedResponse();
+    $response->setCallback(function () {
+    var_dump('Hello World');
+    flush();
+   sleep(2);
+   var_dump('Hello World');
+   flush();
+});
+$img = file_get_contents('C:\Users\anouar gmili\Desktop/test.csv');
+  
+// Encode the image string data into base64
+$data = base64_encode($img);
+  
+// Display the output
+//echo $data;
+$response = new Response();
+$response->setContent(json_encode([
+    'data' => $data,
+]));
+
+$response->headers->set('Content-Type', 'application/json');
+//$response->send();
+return $response;
+ //return $this->render('hiii');
+	//$response = new Response('Hello '.$name, Response::HTTP_OK);
+
+// creates a CSS-response with a 200 status code
+//$response = new Response('<style> ... </style>');
+//$response->headers->set('Content-Type', 'text/css');
+	  
+  /*die($uploadedFile->move("../public/uploads"));
+   //$image = file_get_contents('http://www.affiliatewindow.com/logos/1961/logo.gif');
+   // file_put_contents('../public', $image);
+   //$link2=$uploadedFile;
+   //$link2 = str_replace('\\', '/', $link2);
+   //echo  $link2;*/
+   //$link= 'C:/Users/Anouar Gmili/Desktop/github/logo.gif';
+   //$destdir = '..\upload2';
+   //$img=file_get_contents($link);
+   //file_put_contents($destdir.substr($link,strrpos($link,'/')),$img);
+   
+     //   $filename = "../public/mypdf1.pdf";
+
+        // This should return the file located in /mySymfonyProject/web/public-resources/TextFile.txt
+        // to being viewed in the Browser
+		
+
+        //return new BinaryFileResponse($filename);
+		//return $this->file($filename,"newfil.pdf");
+        /* die("holla toto".$uploadedFile);
+
+      // define vcard
+       $vcard = new VCard();
+        // define variables
+        $lastname = 'Desloovere';
+        $firstname = 'Jeroen';
+        $additional = '';
+        $prefix = '';
+        $suffix = '';
+        // add personal data
+        $vcard->addName($lastname, $firstname, $additional, $prefix, $suffix);
+        // add work data
+        $vcard->addCompany('Siesqo');
+        $vcard->addJobtitle('Web Developer');
+        $vcard->addRole('Data Protection Officer');
+        $vcard->addEmail('info@jeroendesloovere.be');
+        $vcard->addPhoneNumber(1234121212, 'PREF;WORK');
+        $vcard->addPhoneNumber(123456789, 'WORK');
+        $vcard->addAddress(null, null, 'street', 'worktown', null, 'workpostcode', 'Belgium');
+        $vcard->addLabel('street, worktown, workpostcode Belgium');
+        $vcard->addURL('http://www.jeroendesloovere.be');
+        //$vcard->addPhoto(__DIR__ . '/landscape.jpeg');
+        // return vcard as a string
+        //return $vcard->getOutput();
+       
+        //dd('holla');
+        echo 'hiinnn2';
+        $json=json_encode([
+            "nom" =>"anouar",
+            "preno"=>"gmo"
+         ]);
+        $repo=$repository->findAll();
+
+        //echo ($repo);
+        $json2=json_encode($repo);
+        echo($json);
+        echo($json2);
+       // echo($vcard->getOutput());
+        // save vcard on disk
+        $vcard->setSavePath('C:/Users/Anouar Gmili/Desktop/images');
+        $vcard->save();
+*/
+     // $file = new File('C:\Users\anouar gmili\Desktop/test2.csv');
+
+    //return $this->file($file);
+
+    // rename the downloaded file
+   // return $this->file($file, 'custom_name.csv');
+
+    // display the file contents in the browser instead of downloading it
+    //return $this->file('invoice_3241.pdf', 'my_invoice.pdf', ResponseHeaderBag::DISPOSITION_INLINE);
+
+	  //return $this->file('C:\Users\anouar gmili\Documents\my_project_name3\my_project_name\public/arabicworc3.pdf');
+    }
+    public  function test(Request $req){
+        $rowNo = 1;
+        $contac = $req->request->get("filevcard");
+        $filecsv = $req->request->get("nomfilecsv");
+		 $positionvcard = $req->request->get("positionvcard");
+
+        /*$filecsv  = str_replace('\\', '/', $filecsv);
+        //if(!$uploade){
+        //echo $filecsv;
+        //echo "hhhhhhhhhhhhhhhhhhhhhhhhh".$filecsv ;
+         //$fp is file pointer to file sample.csv
+        if (($fp = fopen("../public/test.csv", "r")) !== FALSE) {
+            while (($row = fgetcsv($fp, 1000, ",")) !== FALSE) {
+                $num = count($row);
+                echo " $num fields in line $rowNo: \n";
+                $rowNo++;
+                for ($c=0; $c < $num; $c++) {
+                    // echo ($c);
+                    echo $row[$c][1] . "\n";
+                }
+               // echo $row[0];
+            }
+            fclose($fp);
+        }*/
+        $csv_file_name = strval($filecsv);
+        $vcf_file_name = $contac;
+        /***** END CONFIG *****/
+        // Initialize CSV reader
+        $reader = Reader::createFromPath($csv_file_name);
+        //echo $reader;
+        $i = 0;
+        $contacts = [];
+        $str_contacts = "";
+        // Iterate over CSV contacts
+       foreach ($reader as $index => $column) {
+           if ($i === 0) {
+             $i++;
+           continue;
+           }
+           // Initialize VCard
+           $vcard = new VCard();
+           // Define CSV file columns
+          //$lastname = $column[0];
+          // $firstname = $column[1];
+           $prefix = '';
+           $suffix = '';
+           //$birthday = $column[2];
+           //$phone = $column[0];
+           $phone2 =$column[$positionvcard];
+		   $find   = '212';
+           $pos = strpos($phone2, $find);
+		   if($pos===0){
+			   $phone3=str_replace($find,"",$phone2);
+			   //echo $pos."\n";
+			   //echo $phone3."\n";
+		   }
+		   else
+		   {
+			 $phone3=$phone2;
+
+			   
+		   }
+           $vcard->addName($phone3);
+           $vcard->addPhoneNumber($phone3, 'WORK');
+           //echo  "tele".$phone2;
+         // echo "hhahahah";
+           //echo $lastname ."\n";
+         //  $vcard->addName($lastname, $firstname, $additional, $prefix, $suffix);
+          // $vcard->addPhoneNumber($phone2, 'WORK');
+           //$vcard->addPhoneNumber($phone2);
+           //$vcard->addRole($birthday);
+           //$vcard->addCompany($phone2);
+           $contacts[] = $vcard->getOutput();
+           $i++;
+       }
+        $str_contacts = implode("", $contacts);
+        file_put_contents($vcf_file_name, $str_contacts);
+		
+           /*
+         $prefix = '';
+         $suffix = '';
+         $birthday = $column[10];
+         $phone = $column[8];
+         // END Define CSV file columns
+         $vcard->addName($lastname, $firstname, $additional, $prefix, $suffix);
+         $vcard->addPhoneNumber($phone, 'PREF;WORK');
+         $vcard->addBirthday($birthday);
+         $contacts[] = $vcard->getOutput();
+
+         $i++;
+     }
+
+     $str_contacts = implode("", $contacts);
+
+     file_put_contents($vcf_file_name, $str_contacts);*/
+    }
+
+  
+}

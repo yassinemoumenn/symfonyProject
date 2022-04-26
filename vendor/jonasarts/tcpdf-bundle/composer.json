@@ -1,0 +1,22 @@
+{
+    "name": "jonasarts/tcpdf-bundle",
+    "description": "A TCPDF Bundle for Symfony",
+    "keywords": ["TCPDF"],
+    "homepage": "https://github.com/jonasarts/tcpdf-bundle",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jonas Hauser",
+            "email": "symfony@jonasarts.com",
+            "homepage": "http://www.jonasarts.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "tecnickcom/tcpdf": "^6.3"
+    },
+    "autoload": {
+        "psr-4": { "jonasarts\\Bundle\\TCPDFBundle\\": "" }
+    }
+}
