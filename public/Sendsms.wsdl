@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<definitions xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:tns="urn:sendsmsservicewsdl"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    targetNamespace="urn:sendsmsservicewsdl">
+
+    <types>
+        <xsd:schema targetNamespace="urn:Sendsmswsdl">
+            <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+            <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/"/>
+        </xsd:schema>
+    </types>
+
+    <message name="sendsmsRequest">
+        <part name="name" type="xsd:string"/>
+    </message>
+
+    <message name="sendsmsResponse">
+        <part name="return" type="xsd:string"/>
+    </message>
+
+    <portType name="SendsmswsdlPortType">
+        <operation name="sendsms">
+            <documentation>sendsms World</documentation>
+            <input message="tns:sendsmsRequest"/>
+            <output message="tns:sendsmsResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="SendsmswsdlBinding" type="tns:SendsmswsdlPortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="sendsms">
+            <soap:operation soapAction="urn:arnleadservicewsdl#sendsms" style="rpc"/>
+
+            <input>
+                <soap:body use="encoded" namespace="urn:Sendsmswsdl"
+                    encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+
+            <output>
+                <soap:body use="encoded" namespace="urn:Sendsmswsdl"
+                    encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="Sendsmswsdl">
+        <port name="SendsmswsdlPort" binding="tns:SendsmswsdlBinding">
+            <soap:address location="http://127.0.0.1:8000//soap"/>
+        </port>
+    </service>
+</definitions>

@@ -63,7 +63,7 @@ return $this->render('toto/index.html.twig', [
        $positionnumerodossier = $req->request->get("positionnumerodossier");
        $positionemail = $req->request->get("positionemail");
 
-      //$logo = base64_decode($logo);
+      //$logo = base64_decode($logo); 
        $content = $req->request->get("content");
        $content2 = strip_tags($content);
        $content1 = htmlspecialchars($content,ENT_HTML5);
